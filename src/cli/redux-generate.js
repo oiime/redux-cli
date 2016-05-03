@@ -13,9 +13,11 @@ commander
   .version(version())
   .arguments('<blueprint> [entity name]')
   .option('-v, --verbose', 'Turn debug mode on')
+  .option('-j, --json [filename]', 'get options from json file (use [filename]:[key] to only use a specific section)')
   .description('generates code based off a blueprint')
   .action((blueprintName, entityName, command) => {
     const debug = command.verbose;
+    const json = command.json;
     const rawArgs = command.rawArgs;
     const options = minimist(rawArgs.slice(2));
 
@@ -23,10 +25,12 @@ commander
       entity: {
         name: entityName,
         options,
-        rawArgs
+        rawArgs,
+        json
       },
       debug
     };
+
     subCommand.run(blueprintName, cliArgs);
 
     /*
